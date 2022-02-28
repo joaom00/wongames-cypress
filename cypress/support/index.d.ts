@@ -14,6 +14,20 @@ declare namespace Cypress {
     google(): Chainable<Window>
 
     /**
+     * Custom command to get element by data-cy values
+     * @example cy.getByDataCy('selector')
+     */
+    getByDataCy(
+      selector: string,
+      options?: Partial<
+        Cypress.Loggable &
+          Cypress.Timeoutable &
+          Cypress.Withinable &
+          Cypress.Shadow
+      >
+    ): Chainable<JQuery<Element>>
+
+    /**
      * Custom command to check banner in page
      * @example cy.shouldRenderBanner()
      */

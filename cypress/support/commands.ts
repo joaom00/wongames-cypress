@@ -28,6 +28,10 @@ import '@testing-library/cypress/add-commands'
 
 Cypress.Commands.add('google', () => cy.visit('http://google.com'))
 
+Cypress.Commands.add('getByDataCy', (selector, options) => {
+  return cy.get(`[data-cy="${selector}"]`, options)
+})
+
 Cypress.Commands.add('shouldRenderBanner', () => {
   cy.get('.slick-slider').within(() => {
     cy.findByRole('heading', { name: /cyberpunk 2077/i })
@@ -47,18 +51,18 @@ Cypress.Commands.add('shouldRenderBanner', () => {
 })
 
 Cypress.Commands.add('shouldRenderShowcase', ({ name, highlight = false }) => {
-  cy.get(`[data-cy="${name}"]`).within(() => {
+  cy.getByDataCy(name).within(() => {
     cy.findByRole('heading', { name }).should('exist')
 
-    cy.get(`[data-cy="highlight"]`).should(highlight ? 'exist' : 'not.exist')
+    cy.getByDataCy('highlight').should(highlight ? 'exist' : 'not.exist')
 
     if (highlight) {
-      cy.get(`[data-cy="highlight"]`).within(() => {
+      cy.getByDataCy('highlight').within(() => {
         cy.findByRole('link').should('have.attr', 'href')
       })
     }
 
-    cy.get('[data-cy="game-card"]', { withinSubject: null }).should(
+    cy.getByDataCy('game-card', { withinSubject: null }).should(
       'have.length.gt',
       0
     )
