@@ -5,6 +5,11 @@ type ShowcaseAttributes = {
   highlight?: boolean
 }
 
+type FieldsAttributes = {
+  label: string
+  name: string | number
+}
+
 declare namespace Cypress {
   interface Chainable {
     /**
@@ -26,6 +31,12 @@ declare namespace Cypress {
           Cypress.Shadow
       >
     ): Chainable<JQuery<Element>>
+
+    /**
+     * Custom command to get fields by label
+     * @example cy.getFields([{ label: 'foo', name: 'foo' }])
+     */
+    getFields(fields: FieldsAttributes[]): void
 
     /**
      * Custom command to check banner in page
