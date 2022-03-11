@@ -26,8 +26,6 @@
 
 import '@testing-library/cypress/add-commands'
 
-Cypress.Commands.add('google', () => cy.visit('http://google.com'))
-
 Cypress.Commands.add('getByDataCy', (selector, options) => {
   return cy.get(`[data-cy="${selector}"]`, options)
 })
@@ -90,3 +88,21 @@ Cypress.Commands.add('shouldBeGreaterThan', (value) => {
     .then(parseFloat)
     .should('be.gt', value)
 })
+
+Cypress.Commands.add('signUp', (user) => {
+  cy.findByPlaceholderText(/username/i).type(user.username)
+  cy.findByPlaceholderText(/email/i).type(user.email)
+  cy.findByPlaceholderText(/^password/i).type(user.password)
+  cy.findByPlaceholderText(/confirm password/i).type(user.password)
+  cy.findByRole('button', { name: /sign up now/i }).click()
+})
+
+Cypress.Commands.add(
+  'signIn',
+  (email = 'e2e@wongames.com', password = '123456') => {
+    cy.url().should('contain', `${Cypress.config().baseUrl}/sign-in`)
+    cy.findByPlaceholderText(/email/i).type(email)
+    cy.findByPlaceholderText(/^password/i).type(password)
+    cy.findByRole('button', { name: /sign in now/i }).click()
+  }
+)

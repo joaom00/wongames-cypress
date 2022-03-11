@@ -1,5 +1,11 @@
 /// <reference types="cypress" />
 
+type User = {
+  username: string
+  email: string
+  password: string
+}
+
 type ShowcaseAttributes = {
   name: string
   highlight?: boolean
@@ -13,10 +19,16 @@ type FieldsAttributes = {
 declare namespace Cypress {
   interface Chainable {
     /**
-     * Custom command to visit google page
-     * @example cy.google()
+     * Custom command to sign in
+     * @example cy.signUp({ username: 'will', email: 'm@gmail.com', password: '123' })
      */
-    google(): Chainable<Window>
+    signUp(user: User): void
+
+    /**
+     * Custom command to sign in
+     * @example cy.signUp({ username: 'will', email: 'm@gmail.com', password: '123' })
+     */
+    signIn(email?: string, password?: string): void
 
     /**
      * Custom command to get element by data-cy values
