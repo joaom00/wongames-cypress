@@ -37,10 +37,7 @@ declare namespace Cypress {
     getByDataCy(
       selector: string,
       options?: Partial<
-        Cypress.Loggable &
-          Cypress.Timeoutable &
-          Cypress.Withinable &
-          Cypress.Shadow
+        Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow
       >
     ): Chainable<JQuery<Element>>
 
@@ -67,5 +64,17 @@ declare namespace Cypress {
      * @example cy.shouldBeGreaterThan(50)
      */
     shouldBeGreaterThan(value: number): void
+
+    /**
+     * Custom command to add game to cart by index
+     * @example cy.addToCartByIndex(1)
+     */
+    addToCartByIndex(index: number): void
+
+    /**
+     * Custom command to remove game from cart by index
+     * @example cy.removeFromCartByIndex(1)
+     */
+    removeFromCartByIndex(index: number): void
   }
 }
