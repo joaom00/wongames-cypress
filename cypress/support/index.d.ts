@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 type User = {
   username: string
   email: string
@@ -22,24 +20,7 @@ declare namespace Cypress {
      * Custom command to sign in
      * @example cy.signUp({ username: 'will', email: 'm@gmail.com', password: '123' })
      */
-    signUp(user: User): void
-
-    /**
-     * Custom command to sign in
-     * @example cy.signUp({ username: 'will', email: 'm@gmail.com', password: '123' })
-     */
     signIn(email?: string, password?: string): void
-
-    /**
-     * Custom command to get element by data-cy values
-     * @example cy.getByDataCy('selector')
-     */
-    getByDataCy(
-      selector: string,
-      options?: Partial<
-        Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow
-      >
-    ): Chainable<JQuery<Element>>
 
     /**
      * Custom command to get fields by label
@@ -52,6 +33,12 @@ declare namespace Cypress {
      * @example cy.shouldRenderBanner()
      */
     shouldRenderBanner(): void
+
+    /**
+     * Custom command to check banner in page
+     * @example cy.shouldRenderShowcase()
+     */
+    shouldRenderShowcase(attrs: ShowcaseAttributes): Chainable<Element>
 
     /**
      * Custom command to check if value is less than price

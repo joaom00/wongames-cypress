@@ -4,10 +4,7 @@ import Profile from 'templates/Profile'
 import protectedRoutes from 'utils/protected-routes'
 import { GetServerSidePropsContext } from 'next'
 import { initializeApollo } from 'utils/apollo'
-import {
-  QueryOrders,
-  QueryOrdersVariables
-} from 'graphql/generated/QueryOrders'
+import { QueryOrders, QueryOrdersVariables } from 'graphql/generated/QueryOrders'
 import { QUERY_ORDERS } from 'graphql/queries/orders'
 import { ordersMapper } from 'utils/mappers'
 

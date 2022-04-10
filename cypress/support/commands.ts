@@ -1,34 +1,47 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import { User } from './generate'
 
-import '@testing-library/cypress/add-commands'
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Custom command to get element by data-cy values
+       *
+       * @returns {typeof getByDataCy}
+       * @memberof Chainable
+       * @example
+       *       cy.getByDataCy('selector')
+       */
+      getByDataCy: typeof getByDataCy
 
-Cypress.Commands.add('getByDataCy', (selector, options) => {
+      /**
+       * Custom command to sign in
+       *
+       * @returns {typeof signUp}
+       * @memberof Chainable
+       * @example
+       *       cy.signUp({ username: 'will', email: 'm@gmail.com', password: '123' })
+       */
+      signUp: typeof signUp
+    }
+  }
+}
+
+function getByDataCy(
+  selector: string,
+  options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>
+) {
   return cy.get(`[data-cy="${selector}"]`, options)
-})
+}
+
+function signUp(user: User) {
+  cy.findByPlaceholderText(/username/i).type(user.username)
+  cy.findByPlaceholderText(/email/i).type(user.email)
+  cy.findByPlaceholderText(/^password/i).type(user.password)
+  cy.findByPlaceholderText(/confirm password/i).type(user.password)
+  cy.findByRole('button', { name: /sign up now/i }).click()
+}
+
+Cypress.Commands.add('getByDataCy', getByDataCy)
 
 Cypress.Commands.add('shouldRenderBanner', () => {
   cy.get('.slick-slider').within(() => {
@@ -86,13 +99,7 @@ Cypress.Commands.add('shouldBeGreaterThan', (value) => {
     .should('be.gt', value)
 })
 
-Cypress.Commands.add('signUp', (user) => {
-  cy.findByPlaceholderText(/username/i).type(user.username)
-  cy.findByPlaceholderText(/email/i).type(user.email)
-  cy.findByPlaceholderText(/^password/i).type(user.password)
-  cy.findByPlaceholderText(/confirm password/i).type(user.password)
-  cy.findByRole('button', { name: /sign up now/i }).click()
-})
+Cypress.Commands.add('signUp', signUp)
 
 Cypress.Commands.add('signIn', (email = 'e2e@wongames.com', password = '123456') => {
   cy.url().should('contain', `${Cypress.config().baseUrl}/sign-in`)
@@ -116,3 +123,8 @@ Cypress.Commands.add('removeFromCartByIndex', (index) => {
       cy.findByRole('button', { name: /^remove from cart/i }).click()
     })
 })
+
+/*
+eslint
+  @typescript-eslint/no-namespace: "off",
+*/
